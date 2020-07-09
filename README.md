@@ -6,17 +6,28 @@ Ao executar o comando docker-compose up, o Docker irá subir de forma automátic
 
 Executar o seguinte comando na pasta que esta localizado o arquivo docker-compose.yml para suber os containers:
  - Gerar o certificado SSL
- yum install mod_ssl
- mkdir -p /etc/httpd/ssl/private
- chmod 700 /etc/httpd/ssl/private
- openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/httpd/ssl/private/apache-selfsigned.key -out /etc/httpd/ssl/apache-selfsigned.crt
- - Ajusta para o Zabbix ler os arquivos SSL
- cd /etc/httpd/ssl/
- mv apache-selfsigned.crt ssl.crt
- mv private/apache-selfsigned.key ./
- mv apache-selfsigned.key ssl.key
- - Adicionar a pasta dos certificados no arquivo do docker compose no zabbix-frontend
- volumes:
+ 
+yum install mod_ssl
+
+mkdir -p /etc/httpd/ssl/private
+
+chmod 700 /etc/httpd/ssl/private
+
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/httpd/ssl/private/apache-selfsigned.key -out /etc/httpd/ssl/apache-selfsigned.crt
+
+- Ajusta para o Zabbix ler os arquivos SSL
+
+cd /etc/httpd/ssl/
+
+mv apache-selfsigned.crt ssl.crt
+
+mv private/apache-selfsigned.key ./
+
+mv apache-selfsigned.key ssl.key
+
+- Adicionar a pasta dos certificados no arquivo do docker compose no zabbix-frontend
+
+volumes:
       - '/etc/httpd/ssl/:/etc/ssl/apache2'
 
 docker-compose up -d
